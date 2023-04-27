@@ -1,24 +1,21 @@
 import React, { useRef, useState } from "react";
 import "./RegistrationForm.css";
+import { Link } from "react-router-dom";
 function RegistrationForm() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
-
   const [isLoading, setIsLoading] = useState(false);
   const [password, confirmPassword] = useState(true);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const enteredEmail = emailRef.current.value;
     const enteredPassword = passwordRef.current.value;
     const enteredConfirmPassword = confirmPasswordRef.current.value;
-
     if (enteredPassword !== enteredConfirmPassword) {
       confirmPassword(false);
     }
     console.log(enteredEmail, enteredPassword, enteredConfirmPassword);
-
     if (enteredPassword === enteredConfirmPassword) {
       setIsLoading(true);
       fetch(
@@ -44,17 +41,16 @@ function RegistrationForm() {
           //
         } else {
           res.json().then((data) => {
-            let errorMsg = "Authotication Failed";
+            let errorMessage = "Authentication Failed";
             if (data && data.error && data.error.message) {
-              errorMsg = data.error.message;
+              errorMessage = data.error.message;
             }
-            confirmPassword(errorMsg);
+            confirmPassword(errorMessage);
           });
         }
       });
     }
   };
-
   return (
     <form onSubmit={handleSubmit} className="form">
       <h2>Registration Form</h2>
@@ -90,8 +86,10 @@ function RegistrationForm() {
         </button>
         {isLoading && <p>Loading....</p>}
       </div>
+      <p>
+        Have an account? <Link to="/login">login</Link>
+      </p>
     </form>
   );
 }
-
 export default RegistrationForm;
