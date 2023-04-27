@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Profile.css";
 import AuthContext from "../../store/AuthContext";
@@ -7,6 +7,39 @@ const Profile = () => {
   const nameRef = useRef();
   const urlRef = useRef();
   const ctx = useContext(AuthContext);
+
+  const[getName, setGetName] = useState('');
+  const [getPhoto, setPhoto] = useState('');
+  fetch("https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyABV3Ka88_JCZGivdh4xR89-n-S_BkTf1I",{
+    method: "POST",
+    body: JSON.stringify({
+        idToken:ctx.token
+    }),
+    headers:{
+        "Content-Type": "application/json",
+    },
+  }).then((response) =>{
+    if(response.ok){
+        return response.json();
+    }
+    else{
+        response.json().then((data) =>{
+            let errorMessage = "Authentication failed!";
+            if(data && data.error && data.error.message){
+                errorMessage = data.error.message;
+            }
+            throw new Error(errorMessage);
+        });
+    }
+  }).then((data) =>{
+    setGetName(data.users[0].displayName)
+    setPhoto(data.users[0].photoUrl)
+  }).catch((err) => {
+    console.log(err.message);
+  })
+
+  console.log(getName,getPhoto);
+
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -54,7 +87,7 @@ const Profile = () => {
         <h3>
           <i>Winner never quite, Quiters never Win</i>
           <i style={{ float: "right" }}>
-            Your profile is 65% complete <Link to="#">Complete now 100%</Link>
+            Your profile is 65% complete. A complete profile has higher chances of landing a job. <Link to="#">Complete now 100%</Link>
           </i>
         </h3>
       </header>
@@ -62,9 +95,9 @@ const Profile = () => {
         <form onSubmit={submitHandler} className="pro">
           <h2>Contact Details</h2>
           <label>Full Name:</label>
-          <input type="text" ref={nameRef} />
+          <input type="text" ref={nameRef} defaultValue={getName} />
           <label>Photo Url:</label>
-          <input type="url" ref={urlRef} />
+          <input type="url" ref={urlRef} defaultValue={getPhoto} />
           <br />
           <button className="btn">Update</button>
         </form>
