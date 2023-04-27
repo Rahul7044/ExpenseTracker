@@ -7,3 +7,17 @@
   .profile {
     float: right;
   }
+  .verify {
+    background-color: black;
+    color: white;
+    border-radius: 8px;
+    width: 500px;
+    margin: 90px auto;
+    padding: 25px;
+    text-align: center;
+  }
+  .bt {
+    background-color:white;
+    color:black;
+    padding: 10px 20px;
+  }
