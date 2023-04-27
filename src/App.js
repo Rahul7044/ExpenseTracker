@@ -6,11 +6,13 @@ import AuthContext from "./store/AuthContext";
 import LoginForm from "./components/Auth/LoginForm";
 import RegistrationForm from "./components/Auth/RegistrationForm";
 import Profile from "./components/Profile/Profile";
+import Layout from "./components/Layout/Layout";
 
 function App() {
   const ctx = useContext(AuthContext);
   return (
     <>
+    <Layout>
       <Switch>
         <Route path="/" exact>
           <Redirect to="login" />
@@ -32,14 +34,24 @@ function App() {
             <Home />
           </Route>
         )}
+        <Route path="/profile">
+          {ctx.isLogin && <Profile />}
+          {!ctx.isLogin && <Redirect to="/login" />}
+        </Route>
+
+        {!ctx.isLogin && (
+          <Route path="*">
+            <Redirect to="/login" />
+          </Route>
+        )}
         {ctx.isLogin && (
-          <Route path="/profile">
-            <Profile />
+          <Route path="*">
+            <Redirect to="/home" />
           </Route>
         )}
       </Switch>
-      {console.log(ctx.isLogin)}
-    </>
-  );
+    </Layout>
+  </>
+);
 }
 export default App;
