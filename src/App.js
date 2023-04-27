@@ -7,6 +7,7 @@ import LoginForm from "./components/Auth/LoginForm";
 import RegistrationForm from "./components/Auth/RegistrationForm";
 import Profile from "./components/Profile/Profile";
 import Layout from "./components/Layout/Layout";
+import ForgetPassword from "./components/Auth/ForgetPassword";
 
 function App() {
   const ctx = useContext(AuthContext);
@@ -29,6 +30,11 @@ function App() {
             <RegistrationForm />
           </Route>
         )}
+        {!ctx.isLogin && (
+            <Route path="/forget">
+              <ForgetPassword />
+            </Route>
+          )}
         {ctx.isLogin && (
           <Route path="/home">
             <Home />

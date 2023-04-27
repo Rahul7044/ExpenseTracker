@@ -80,6 +80,7 @@ const LoginForm = () =>{
                     {isLoading && <p>Loading</p>}
                 </div>
                 <p>Have an account? <Link to ="/register">Register</Link></p>
+                <Link to="/forget"><i>Forget password</i></Link>
 
 
             </form>
