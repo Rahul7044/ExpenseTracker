@@ -29,6 +29,7 @@ const ForgetPassword = () => {
             if (data && data.error && data.error.message) {
               errorMessage = data.error.message;
             }
+            alert(errorMessage)
             throw new Error(errorMessage);
           });
         }
