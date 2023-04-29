@@ -9,6 +9,7 @@ const Navigation = () => {
 
   const logoutHandler = () => {
     authCtx.logout();
+    localStorage.removeItem('email')
   };
   return (
     <header className="header">
@@ -20,11 +21,6 @@ const Navigation = () => {
           {!isLoggedIn && (
             <li>
               <Link to="/login">Login</Link>
-            </li>
-          )}
-          {isLoggedIn && (
-            <li>
-              <Link to="/expense">Expenses</Link>
             </li>
           )}
           {isLoggedIn && (

@@ -54,6 +54,7 @@ const LoginForm = () =>{
                 }
             }).then((data) => {
                 console.log(data.idToken);
+                localStorage.setItem("email", data.email.replace(/[@.]/g, ""));
                 authCtx.login(data.idToken);
                 history.replace("./home");
 

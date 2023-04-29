@@ -3,20 +3,23 @@ import SingleExpense from "./SingleExpense";
 
 const Expenses = () => {
   const [expenses, setExpenses] = useState([]);
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
+  const [isEdit, setEdit] = useState(false);
+  const [expenseId, setExpenseId] = useState(null);
   const initialState = () => {
     const value = "Food";
     return value;
   };
   const [category, setCategory] = useState(initialState);
+  const email = localStorage.getItem("email");
   const categoryHandler = (event) => {
     setCategory(event.target.value);
   };
 
   const getExpenses = () => {
     fetch(
-      "https://react-http-efb57-default-rtdb.firebaseio.com/expenses.json",
+      `https://react-http-efb57-default-rtdb.firebaseio.com/${email}.json`,
       {
         method: "GET",
         headers: {
@@ -25,7 +28,7 @@ const Expenses = () => {
       }
     )
       .then((response) => {
-        if (response.ok) {
+        if (response) {
           return response.json();
         } else {
           response.json().then((data) => {
@@ -42,6 +45,7 @@ const Expenses = () => {
         let arr = [];
         for (let key in data) {
           arr.push({
+            id: key,
             description: data[key].description,
             amount: data[key].amount,
             category: data[key].category,
@@ -56,16 +60,85 @@ const Expenses = () => {
 
   const expenseFormHandler = (event) => {
     event.preventDefault();
-    const data = {
-      amount: amount,
-      description: description,
-      category: category,
-    };
+    if (isEdit === true) {
+      //
+      const data = {
+        amount: amount,
+        desc: description,
+        category: category,
+      };
+      fetch(
+        `https://react-http-efb57-default-rtdb.firebaseio.com/${email}/${expenseId}.json`,
+        {
+          method: "PUT",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+        .then((response) => {
+          console.log(response);
+          getExpenses();
+          setAmount(0);
+          setDescription("");
+          setCategory(initialState);
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    } else {
+      const data = {
+        amount: amount,
+        description: description,
+        category: category,
+      };
+
+      fetch(
+        `https://react-http-efb57-default-rtdb.firebaseio.com/${email}.json`,
+        {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+        .then((response) => {
+          console.log(response);
+          setAmount(0);
+          setDescription("");
+          setCategory(initialState);
+          getExpenses();
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    }
+
+    setExpenses((prevExp) => {
+      let newExpense = [...prevExp];
+      newExpense.push(expenses);
+      return newExpense;
+    });
+  };
+
+  const editHandler = (id) => {
+    let editExpense = expenses.filter((expense) => {
+      return expense.id === id;
+    });
+    setEdit(true);
+    setExpenseId(id);
+    setAmount(editExpense[0].amount);
+    setDescription(editExpense[0].desc);
+    setCategory(editExpense[0].category);
+    console.log(editExpense);
+  };
+    const deleteHandler = (id) => {
     fetch(
-      "https://react-http-efb57-default-rtdb.firebaseio.com/expenses.json",
+      `https://react-http-efb57-default-rtdb.firebaseio.com/${email}/${id}.json`,
       {
-        method: "POST",
-        body: JSON.stringify(data),
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
@@ -73,19 +146,13 @@ const Expenses = () => {
     )
       .then((response) => {
         console.log(response);
+        getExpenses();
       })
       .catch((err) => {
         alert(err);
       });
-    setExpenses((prevExp) => {
-      let newExpense = [...prevExp];
-      newExpense.push(data);
-      return newExpense;
-    });
-    setAmount(0);
-    setDescription("");
-    setCategory(initialState);
-  };
+    };
+  
   useEffect(() => {
     getExpenses();
     console.log(expenses);
@@ -119,6 +186,7 @@ const Expenses = () => {
                 className="input"
                 id="category"
                 onChange={categoryHandler}
+                value={category}
               >
                 <option value="Food">Food</option>
                 <option value="Petrol">Petrol</option>
@@ -137,10 +205,13 @@ const Expenses = () => {
         {expenses.map((expense, index) => {
           return (
             <SingleExpense
+            id={expense.id}
               key={index}
               amount={expense.amount}
               desc={expense.description}
               category={expense.category}
+              editHandler={editHandler}
+              deleteHandler={deleteHandler}
             />
           );
         })}
