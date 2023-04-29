@@ -1,7 +1,7 @@
 .login {
-    background-color: rgb(168, 178, 175);
+    background-color: bisque;
     border-radius: 5px;
-    width: 550px;
+    width: 450px;
     margin: 100px auto;
     padding: 20px;
     text-align: center;
@@ -17,12 +17,12 @@
     text-align: center;
   }
   .login input {
-    width: 60%;
+    width: 50%;
     display: flex;
-    width: 500px;
+    width: 400px;
     height: 50px;
     background-color: white;
-    border: 1px solid lightgray;
+    border: 1px solid black;
     margin: 15px auto;
   }
   .foo {
@@ -31,6 +31,6 @@
     padding: 30px;
   }
   .foo button {
-    background-color: rgb(182, 182, 177);
+    background-color: rgb(219, 219, 158);
     padding: 10px 20px;
   }

@@ -5,7 +5,7 @@ const SingleExpense = (props) => {
     <div>
       <li>
         <i>
-          {props.desc}-{props.amount}-{props.category}
+          {props.description}-{props.amount}-{props.category}
         </i>
       </li>
     </div>

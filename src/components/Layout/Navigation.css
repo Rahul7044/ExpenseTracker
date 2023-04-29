@@ -1,8 +1,8 @@
 .header {
     width: 90%;
     height: 3rem;
-    background-color: #5e77f430;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    background-color: aqual;
+    box-shadow: black;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -36,7 +36,7 @@
   
   .header button {
     font: inherit;
-    background-color: transparent;
+    background-color: bisque;
     border: 1px solid white;
     color: white;
     font-weight: bold;

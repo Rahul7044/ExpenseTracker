@@ -24,12 +24,22 @@ const Navigation = () => {
           )}
           {isLoggedIn && (
             <li>
+              <Link to="/expense">Expenses</Link>
+            </li>
+          )}
+          {isLoggedIn && (
+            <li>
               <Link to="/Home">Home</Link>
             </li>
           )}
           {isLoggedIn && (
             <li>
               <Link to="/profile">Profile</Link>
+            </li>
+          )}
+          {isLoggedIn && (
+            <li>
+              <Link to="/expense">Expenses</Link>
             </li>
           )}
           {isLoggedIn && (

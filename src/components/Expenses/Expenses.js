@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SingleExpense from "./SingleExpense";
 
 const Expenses = () => {
@@ -14,6 +14,46 @@ const Expenses = () => {
     setCategory(event.target.value);
   };
 
+  const getExpenses = () => {
+    fetch(
+      "https://react-http-efb57-default-rtdb.firebaseio.com/expenses.json",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          response.json().then((data) => {
+            let errorMessage = "Authotication Failed";
+            if (data && data.error && data.error.message) {
+              errorMessage = data.error.message;
+            }
+            throw new Error(errorMessage);
+          });
+        }
+      })
+      .then((data) => {
+        console.log(data);
+        let arr = [];
+        for (let key in data) {
+          arr.push({
+            description: data[key].description,
+            amount: data[key].amount,
+            category: data[key].category,
+          });
+        }
+        setExpenses(arr);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const expenseFormHandler = (event) => {
     event.preventDefault();
     const data = {
@@ -21,6 +61,22 @@ const Expenses = () => {
       description: description,
       category: category,
     };
+    fetch(
+      "https://react-http-efb57-default-rtdb.firebaseio.com/expenses.json",
+      {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        alert(err);
+      });
     setExpenses((prevExp) => {
       let newExpense = [...prevExp];
       newExpense.push(data);
@@ -30,6 +86,10 @@ const Expenses = () => {
     setDescription("");
     setCategory(initialState);
   };
+  useEffect(() => {
+    getExpenses();
+    console.log(expenses);
+  }, []);
   return (
     <>
       <div className="form">
@@ -44,7 +104,7 @@ const Expenses = () => {
               />
             </div>
             <div>
-              <h5>ADD DESCRIPTION</h5>
+              <h5>Description</h5>
               <input
                 type="text"
                 value={description}
