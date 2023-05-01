@@ -1,67 +1,72 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import { Redirect, Route, Switch } from "react-router-dom";
 import Home from "./pages/Home";
-import AuthContext from "./store/AuthContext";
 import LoginForm from "./components/Auth/LoginForm";
 import RegistrationForm from "./components/Auth/RegistrationForm";
 import Profile from "./components/Profile/Profile";
 import Layout from "./components/Layout/Layout";
 import ForgetPassword from "./components/Auth/ForgetPassword";
 import Expenses from "./components/Expenses/Expenses";
+import { useSelector } from "react-redux";
 
 function App() {
-  const ctx = useContext(AuthContext);
+  const isLogin = useSelector((state) => state.auth.isLoggedin);
+  console.log(isLogin);
   return (
     <>
     <Layout>
       <Switch>
-        <Route path="/" exact>
-          <Redirect to="login" />
-        </Route>
-        {!ctx.isLogin && (
-          <Route path="/login">
-            <LoginForm />
-          </Route>
-        )}
-        {!ctx.isLogin && (
-          <Route path="/register">
-            <RegistrationForm />
-          </Route>
-        )}
-        {!ctx.isLogin && (
-          <Route path="/forget">
-            <ForgetPassword />
-          </Route>
-        )}
-        {ctx.isLogin && (
-          <Route path="/home">
-            <Home />
-          </Route>
-        )}
-        <Route path="/profile">
-          {ctx.isLogin && <Profile />}
-          {!ctx.isLogin && <Redirect to="/login" />}
-        </Route>
-        {ctx.isLogin && (
-          <Route path="/expense">
-            <Expenses />
-          </Route>
-        )}
+      {!isLogin && (
+            <Route path="/" exact>
+              <Redirect to="login" />
+            </Route>
+          )}
 
-        {!ctx.isLogin && (
-          <Route path="*">
-            <Redirect to="/login" />
+          {!isLogin && (
+            <Route path="/login">
+              <LoginForm />
+            </Route>
+          )}
+
+          {!isLogin && (
+            <Route path="/register">
+              <RegistrationForm />
+            </Route>
+          )}
+          {!isLogin && (
+            <Route path="/forget">
+              <ForgetPassword />
+            </Route>
+          )}
+          {isLogin && (
+            <Route path="/home">
+              <Home />
+            </Route>
+          )}
+          <Route path="/profile">
+            {isLogin && <Profile />}
+            {!isLogin && <Redirect to="/login" />}
           </Route>
-        )}
-        {ctx.isLogin && (
-          <Route path="*">
-            <Redirect to="/home" />
-          </Route>
-        )}
-      </Switch>
-    </Layout>
-  </>
-);
+          {isLogin && (
+            <Route path="/expense">
+              <Expenses />
+            </Route>
+          )}
+
+          {!isLogin && (
+            <Route path="*">
+              <Redirect to="/login" />
+            </Route>
+          )}
+          {isLogin && (
+            <Route path="*">
+              <Redirect to="/home" />
+            </Route>
+          )}
+        </Switch>
+      </Layout>
+    </>
+  );
 }
 export default App;

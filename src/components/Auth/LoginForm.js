@@ -1,8 +1,11 @@
-import React, {useContext, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 
 import "./LoginForm.css";
-import AuthContext from "../../store/AuthContext";
+
 import {useHistory,Link} from "react-router-dom";
+
+import { useDispatch } from "react-redux";
+import { authAction } from "../../store/auth";
 
 const LoginForm = () =>{
     const history = useHistory();
@@ -12,7 +15,7 @@ const LoginForm = () =>{
     const[isLoading, setIsLoading] = useState(false);
     const[password, confirmPassword] = useState(true);
 
-    const authCtx = useContext(AuthContext);
+    const dispatch = useDispatch();
 
     const handleSubmit = (event) =>{
         event.preventDefault();
@@ -54,8 +57,11 @@ const LoginForm = () =>{
                 }
             }).then((data) => {
                 console.log(data.idToken);
+                if (data.idToken) {
+                    localStorage.setItem("token", data.idToken);
+                    dispatch(authAction.login(data.idToken));
+                  }
                 localStorage.setItem("email", data.email.replace(/[@.]/g, ""));
-                authCtx.login(data.idToken);
                 history.replace("./home");
 
             }).catch((err)=>{
