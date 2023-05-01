@@ -13,6 +13,7 @@ const SingleExpense = (props) => {
         <button onClick={() => props.deleteHandler(props.id)} className="btn">
           Delete
         </button>
+        {props.amount > 1000 && <button>Premium</button>}
       </li>
     </div>
   );
