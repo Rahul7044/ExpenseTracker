@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import SingleExpense from "./SingleExpense";
 import { useDispatch } from "react-redux";
 import { expenseAction } from "../../store/expense";
+import { CSVLink } from "react-csv";
 
 const Expenses = () => {
   const [expenses, setExpenses] = useState([]);
@@ -9,6 +10,7 @@ const Expenses = () => {
   const [description, setDescription] = useState("");
   const [isEdit, setEdit] = useState(false);
   const [expenseId, setExpenseId] = useState(null);
+  const [csvData, setCsv] = useState("No Data");
   const initialState = () => {
     const value = "Food";
     return value;
@@ -21,7 +23,7 @@ const Expenses = () => {
     setCategory(event.target.value);
   };
 
-  const getExpenses = () => {
+  const getExpenses = useCallback(() => {
     fetch(
       `https://react-http-efb57-default-rtdb.firebaseio.com/${email}.json`,
       {
@@ -55,6 +57,7 @@ const Expenses = () => {
             category: data[key].category,
           });
         }
+        setCsv(arr);
         setExpenses(arr);
         localStorage.setItem("allExpense", JSON.stringify(arr));
         dispatch(expenseAction.addExpenses(expenses));
@@ -62,7 +65,7 @@ const Expenses = () => {
       .catch((err) => {
         console.log(err);
       });
-  };
+  }, [dispatch, email, expenses]);
 
   const expenseFormHandler = (event) => {
     event.preventDefault();
@@ -167,8 +170,22 @@ const Expenses = () => {
   
   useEffect(() => {
     getExpenses();
-    console.log(expenses);
-  }, []);
+  }, [getExpenses]);
+
+  let header = [
+    {
+      label: "Amount",
+      key: "amount",
+    },
+    {
+      label: "Description",
+      key: "description",
+    },
+    {
+      label: "Category",
+      key: "category",
+    },
+  ];
   return (
     <>
       <div className="form">
@@ -227,6 +244,9 @@ const Expenses = () => {
             />
           );
         })}
+        <CSVLink data={csvData} headers={header} filename="likun.csv">
+          List
+        </CSVLink>
       </div>
     </>
   );
