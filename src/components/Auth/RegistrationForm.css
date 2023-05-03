@@ -1,5 +1,5 @@
   .form {
-    background-color: rgb(168, 178, 175);
+    background-color: lightcyan;
     border-radius: 5px;
     width: 550px;
     margin: 100px auto;
@@ -30,4 +30,8 @@
   .footer button {
     background-color: rgb(182, 182, 177);
     padding: 10px;
+  }
+  .header button:hover {
+    background-color: #3d559b;
+    color: #363238;
   }

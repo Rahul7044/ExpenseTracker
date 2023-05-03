@@ -145,7 +145,7 @@ const Expenses = () => {
     setEdit(true);
     setExpenseId(id);
     setAmount(editExpense[0].amount);
-    setDescription(editExpense[0].desc);
+    setDescription(editExpense[0].description);
     setCategory(editExpense[0].category);
     console.log(editExpense);
   };
@@ -237,7 +237,7 @@ const Expenses = () => {
             id={expense.id}
               key={index}
               amount={expense.amount}
-              desc={expense.description}
+              description={expense.description}
               category={expense.category}
               editHandler={editHandler}
               deleteHandler={deleteHandler}

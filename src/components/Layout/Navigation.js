@@ -14,28 +14,28 @@ const Navigation = () => {
   };
   return (
     <header className="header">
-      <Link to="/">
+      <Link to="/" className="r">
         <div className="logo">Expense Tracker</div>
       </Link>
       <nav>
-        <ul>
+        <ul >
           {!isLoggedIn && (
-            <li>
+            <li className="rahul">
               <Link to="/login">Login</Link>
             </li>
           )}
           {isLoggedIn && (
-            <li>
+            <li className="rahul">
               <Link to="/Home">Home</Link>
             </li>
           )}
           {isLoggedIn && (
-            <li>
+            <li className="rahul">
               <Link to="/profile">Profile</Link>
             </li>
           )}
           {isLoggedIn && (
-            <li>
+            <li className="rahul">
               <Link to="/expense">Expenses</Link>
             </li>
           )}

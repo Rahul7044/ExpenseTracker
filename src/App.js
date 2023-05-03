@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 
 import { Redirect, Route, Switch } from "react-router-dom";
 import Home from "./pages/Home";
@@ -9,13 +9,28 @@ import Layout from "./components/Layout/Layout";
 import ForgetPassword from "./components/Auth/ForgetPassword";
 import Expenses from "./components/Expenses/Expenses";
 import { useSelector } from "react-redux";
+import ThemeContextProvider from "./components/Context/Theme";
+
+import ThemeContext from "./components/Context/Theme";
 
 function App() {
+  const amount = useContext(ThemeContext);
+  const style = {
+    light:{
+      color: "black",
+    background: "white",
+    },
+    dark:{
+      color:"white",
+      background:"black"
+    },
+    
+  };
   const isLogin = useSelector((state) => state.auth.isLoggedin);
   console.log(isLogin);
   return (
-    <>
-    <Layout>
+    <div>
+     <Layout>
       <Switch>
       {!isLogin && (
             <Route path="/" exact>
@@ -66,7 +81,7 @@ function App() {
           )}
         </Switch>
       </Layout>
-    </>
+    </div>
   );
 }
 export default App;

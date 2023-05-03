@@ -5,7 +5,7 @@ const SingleExpense = (props) => {
     <div>
       <li>
         <i>
-          {props.category}--{props.amount}--{props.description}--
+          {props.category}--{props.amount}--{props.description}
         </i>
         <button onClick={() => props.editHandler(props.id)} className="btn">
           Edit
@@ -13,7 +13,7 @@ const SingleExpense = (props) => {
         <button onClick={() => props.deleteHandler(props.id)} className="btn">
           Delete
         </button>
-        {props.amount > 1000 && <button className="premium">Premium</button>}
+        {props.amount > 10000 && <button className="premium">Premium</button>}
       </li>
     </div>
   );

@@ -8,8 +8,8 @@
     float: right;
   }
   .verify {
-    background-color: black;
-    color: white;
+    background-color: lightcyan;
+    color: black;
     border-radius: 8px;
     width: 500px;
     margin: 90px auto;
@@ -17,7 +17,7 @@
     text-align: center;
   }
   .bt {
-    background-color:white;
+    background-color:lightcyan;
     color:black;
     padding: 10px 20px;
   }
