@@ -19,7 +19,7 @@ function RegistrationForm() {
     if (enteredPassword === enteredConfirmPassword) {
       setIsLoading(true);
       fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyABV3Ka88_JCZGivdh4xR89-n-S_BkTf1I",
+        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBkexHoGzG7icsvis53OrXznrAFgSeqJRQ",
         {
           method: "POST",
           body: JSON.stringify({
